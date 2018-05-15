@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
-import { Card, CardSection, Input, Button, Spinner } from './common';
-
+import { Card, CardSection, Input, Spinner } from './common';
+import { Button } from 'react-native-elements';
 class LoginForm extends Component {
 	onEmailChange(text) {
 		this.props.emailChanged(text);
 	}
 
-	onPasswordChange(text){
+	onPasswordChange(text) {
 		this.props.passwordChanged(text);
 	}
 
-	onButtonPress(){
+	onButtonPress() {
 		const { email, password } = this.props;
 
 		this.props.loginUser({ email, password });
@@ -23,9 +23,9 @@ class LoginForm extends Component {
 	renderError() {
 		if (this.props.error) {
 			return (
-				<View style={{ backgroundColor: 'white'}}>
+				<View style={{ backgroundColor: 'white' }}>
 					<Text style={styles.errorTextStyle}>
-					 	{this.props.error}
+						{this.props.error}
 					</Text>
 				</View>
 			);
@@ -38,40 +38,53 @@ class LoginForm extends Component {
 		}
 
 		return (
-			<Button 
-			onPress={this.onButtonPress.bind(this)}
-			>Login        </Button>
+			<TouchableOpacity
+				style={{ alignItems: 'center', justifyContent: 'center' }}
+				onPress={() => this.onButtonPress()}
+			>
+				<LinearGradient
+					style={styles.loginButtonContainer}
+					colors={['#FF5637', '#FF444A', '#FF2D68']}>
+					<Text style={styles.loginButtonText}>LOGIN</Text>
+				</LinearGradient>
+			</TouchableOpacity>
 		);
 	}
 
-	render(){
+	render() {
 		return (
-			<View style={styles.backgroundStyle}>
-				<CardSection>
-					<Input 
-						label="Email"
-						placeholder="example@email.com"
-						onChangeText={this.onEmailChange.bind(this)}
-						value={this.props.email}
-					/>
-				</CardSection>
-				<CardSection>
-					<Input
-						secureTextEntry
-						label="Password"
-						placeholder="password"
-						onChangeText={this.onPasswordChange.bind(this)}
-						value={this.props.password}
-					/>
-				</CardSection>
-
-				{this.renderError()}
-
-				<CardSection>
-					{this.renderButton()}
-				</CardSection>
+			<View style={styles.backgroundContainer}>
+				<View style={styles.inputsContatiner}>
+					<View style={styles.cardContainer}>
+						<Input
+							label="Email"
+							placeholder="example@email.com"
+							onChangeText={this.onEmailChange.bind(this)}
+							value={this.props.email}
+						/>
+					</View>
+					<View style={styles.cardContainer}>
+						<Input
+							secureTextEntry
+							label="Password"
+							placeholder="password"
+							onChangeText={this.onPasswordChange.bind(this)}
+							value={this.props.password}
+						/>
+					</View>
+				</View>
+				<View style={styles.buttonStyle}>
+				<View style={styles.cardContainer}>
+						{this.renderError()}
+					</View>
+				</View>
+				<View style={styles.buttonStyle}>
+				<View style={styles.cardContainer}>
+						{this.renderButton()}
+					</View>
+				</View>
 			</View>
-			);
+		);
 	}
 }
 
@@ -81,22 +94,53 @@ const styles = {
 		alignSelf: 'center',
 		color: 'red'
 	},
-	backgroundStyle: {
+	backgroundContainer: {
 		flex: 1,
-		backgroundColor: '#23213F'
+		backgroundColor: 'white'
+	},
+	inputsContatiner: {
+		paddingTop: 10
+	},
+	buttonStyle: {
+		alignItems: 'center'
+	},
+	cardContainer: {
+		padding: 10,
+		backgroundColor: 'white',
+		justifyContent: 'flex-start',
+		flexDirection: 'row',
+		borderRadius: 20,
+		position: 'relative'
+	},
+	loginButtonContainer: {
+		justifyContent: 'center',
+		backgroundColor: 'transparent',
+		alignItems: 'center',
+		width: 300,
+		height: 45,
+		padding: 15,
+		borderRadius: 20,
+		shadowOffset: { width: 3, height: 3, },
+		shadowColor: 'black',
+		shadowOpacity: 0.2,
+	},
+	loginButtonText: {
+		fontWeight: 'bold',
+		fontSize: 20,
+		color: 'white',
 	}
 };
 
-const mapStateToProps = ({auth}) => {
-	const {email, password, error, loading} = auth;
+const mapStateToProps = ({ auth }) => {
+	const { email, password, error, loading } = auth;
 
 	return {
-	 	email,
+		email,
 		password,
 		error,
-	 	loading
+		loading
 	};
 };
-export default connect(mapStateToProps, { 
+export default connect(mapStateToProps, {
 	emailChanged, passwordChanged, loginUser
 })(LoginForm);
