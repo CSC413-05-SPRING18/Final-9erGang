@@ -1,14 +1,15 @@
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
-import { 
+import {
 	EMAIL_CHANGED,
 	PASSWORD_CHANGED,
 	CREATE_USER_SUCCESS,
 	CREATE_USER_FAIL,
 	LOGIN_USER_FAIL,
 	LOGIN_USER_SUCCESS,
-	LOGIN_USER_START
-	 } from './types';
+	LOGIN_USER_START,
+	LOGOUT_USER_SUCCESS
+} from './types';
 
 export const emailChanged = (text) => {
 	return {
@@ -27,9 +28,9 @@ export const passwordChanged = (text) => {
 export const createUser = ({ email, password }) => {
 	return (dispatch) => {
 		dispatch({ type: LOGIN_USER_START });
-				firebase.auth().createUserWithEmailAndPassword(email, password)
-					.then(user => createUserSuccess(dispatch, user))
-					
+		firebase.auth().createUserWithEmailAndPassword(email, password)
+			.then(user => createUserSuccess(dispatch, user))
+
 	};
 };
 
@@ -64,8 +65,18 @@ const loginUserSuccess = (dispatch, user) => {
 	dispatch({
 		type: LOGIN_USER_SUCCESS,
 		payload: user
-    });
-    Actions.main();
+	});
+	Actions.main();
 };
+
+export const logoutUserSuccess = (dispatch, user) => {
+	return (dispatch) => {
+		dispatch({ type: LOGOUT_USER_SUCCESS });
+
+		firebase.auth().signOut();
+		Actions.intro();
+	};
+};
+
 
 
