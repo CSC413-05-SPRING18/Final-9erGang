@@ -4,3 +4,4 @@ npm-debug.*
 .DS_Store
 src/.DS_Store
 src/components/.DS_Store
+src/actions/.DS_Store

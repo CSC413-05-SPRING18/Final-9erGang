@@ -4,5 +4,5 @@ import PortfolioReducer from './PortfolioReducer';
 
 export default combineReducers({
   auth: AuthReducer,
-  portfolio: PortfolioReducer,
+  portfolio: PortfolioReducer, 
 });

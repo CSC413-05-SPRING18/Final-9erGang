@@ -10,7 +10,7 @@ import {
 const INITIAL_STATE = {
   checked: [],
   coins: {},
-};
+}; 
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {

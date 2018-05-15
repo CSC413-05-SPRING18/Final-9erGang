@@ -9,7 +9,7 @@ import {
   LOGOUT_USER_SUCCESS,
 } from '../actions/types';
 
-const INITIAL_STATE = {
+const INITIAL_STATE = { 
   email: '',
   password: '',
   user: null,
